@@ -22,32 +22,36 @@
 #include "adapter.h"
 #include <boost/numeric/ublas/matrix.hpp>
 
-template<typename Data> class BoostMatrixAdapter : public Adapter<Data,boost::numeric::ublas::matrix<Data> >
-{
+namespace munkres {
+template <typename Data>
+class BoostMatrixAdapter
+    : public Adapter<Data, boost::numeric::ublas::matrix<Data>> {
 public:
-    virtual Matrix<Data> convertToMatrix(const boost::numeric::ublas::matrix<Data> &boost_matrix) const override
-    {
-        const auto rows = boost_matrix.size1 ();
-          const auto columns = boost_matrix.size2 ();
-          Matrix <Data> matrix (rows, columns);
-          for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
-              matrix (i, j) = boost_matrix (i, j);
-            }
-          }
-          return matrix;
+  virtual Matrix<Data> convertToMatrix(
+      const boost::numeric::ublas::matrix<Data>& boost_matrix) const override {
+    const auto rows = boost_matrix.size1();
+    const auto columns = boost_matrix.size2();
+    Matrix<Data> matrix(rows, columns);
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < columns; ++j) {
+        matrix(i, j) = boost_matrix(i, j);
+      }
     }
+    return matrix;
+  }
 
-    virtual void convertFromMatrix(boost::numeric::ublas::matrix<Data> &boost_matrix,const Matrix<Data> &matrix) const override
-    {
-        const auto rows = matrix.rows();
-          const auto columns = matrix.columns();
-          for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
-              boost_matrix (i, j) = matrix (i, j);
-            }
-          }
+  virtual void
+      convertFromMatrix(boost::numeric::ublas::matrix<Data>& boost_matrix,
+                        const Matrix<Data>& matrix) const override {
+    const auto rows = matrix.rows();
+    const auto columns = matrix.columns();
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < columns; ++j) {
+        boost_matrix(i, j) = matrix(i, j);
+      }
     }
+  }
 };
 
+} // namespace munkres
 #endif /* _BOOSTMATRIXADAPTER_H_ */

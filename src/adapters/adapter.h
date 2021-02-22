@@ -22,19 +22,24 @@
 #include "matrix.h"
 #include "munkres.h"
 
-template<typename Data, class Container > class Adapter
-{
+namespace munkres {
+template <typename Data, class Container>
+class Adapter {
 public:
-    virtual Matrix<Data> convertToMatrix(const Container &con) const = 0;
-    virtual void convertFromMatrix(Container &con, const Matrix<Data> &matrix) const = 0;
-    virtual void solve(Container &con)
-    {
-        auto matrix = convertToMatrix(con);
-        m_munkres.solve(matrix);
-        convertFromMatrix(con, matrix);
-    }
+  virtual Matrix<Data> convertToMatrix(const Container& con) const = 0;
+  virtual void convertFromMatrix(Container& con,
+                                 const Matrix<Data>& matrix) const = 0;
+  virtual void solve(Container& con) {
+    auto matrix = convertToMatrix(con);
+    m_munkres.solve(matrix);
+    convertFromMatrix(con, matrix);
+  }
+
+  virtual ~Adapter() {}
+
 protected:
-    Munkres<Data> m_munkres;
+  Munkres<Data> m_munkres;
 };
 
+} // namespace munkres
 #endif /* _ADAPTER_H_ */

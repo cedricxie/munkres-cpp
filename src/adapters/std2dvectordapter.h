@@ -19,43 +19,46 @@
 #ifndef RAW2DARRAY_H
 #define RAW2DARRAY_H
 
+#include <vector>
+
 #include "adapter.h"
 
-template<typename Data> class Std2dVectorAdapter : public Adapter<Data,std::vector<std::vector <Data>>>
-{
+namespace munkres {
+template <typename Data>
+class Std2dVectorAdapter
+    : public Adapter<Data, std::vector<std::vector<Data>>> {
 public:
-    virtual Matrix<Data> convertToMatrix(const std::vector<std::vector <Data>> &vector) const override
-    {
-        const int rows = vector.size();
-        const int cols = vector[0].size();
-        Matrix <Data> matrix (rows, cols);
-        for (int i = 0; i < rows; ++i)
-        {
-            for (int j = 0; j < cols; ++j)
-            {
-                matrix(i, j) = vector[i][j];
-            }
-        }
-        return matrix;
+  virtual Matrix<Data> convertToMatrix(
+      const std::vector<std::vector<Data>>& vector) const override {
+    const int rows = vector.size();
+    const int cols = vector[0].size();
+    Matrix<Data> matrix(rows, cols);
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < cols; ++j) {
+        matrix(i, j) = vector[i][j];
+      }
     }
+    return matrix;
+  }
 
-    virtual void convertFromMatrix(std::vector<std::vector <Data>> &vector,const Matrix<Data> &matrix) const override
-    {
-        vector.clear();
+  virtual void convertFromMatrix(std::vector<std::vector<Data>>& vector,
+                                 const Matrix<Data>& matrix) const override {
+    vector.clear();
 
-        const int rows = matrix.rows();
-        const int cols = matrix.columns();
-        for (int i = 0; i < rows; ++i)
-        {
-            std::vector <Data> temp;
-            for (int j = 0; j < cols; ++j)
-            {
-                temp.push_back(matrix(i,j));
-            }
+    const int rows = matrix.rows();
+    const int cols = matrix.columns();
+    for (int i = 0; i < rows; ++i) {
+      std::vector<Data> temp;
+      for (int j = 0; j < cols; ++j) {
+        temp.push_back(matrix(i, j));
+      }
 
-            vector.push_back(temp);
-        }
+      vector.push_back(temp);
     }
+  }
+
+  virtual ~Std2dVectorAdapter() {}
 };
 
+} // namespace munkres
 #endif // RAW2DARRAY_H

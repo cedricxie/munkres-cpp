@@ -18,6 +18,8 @@
 
 #include "boostmatrixadapter.h"
 
+namespace munkres {
 template class BoostMatrixAdapter<double>;
 template class BoostMatrixAdapter<float>;
 template class BoostMatrixAdapter<int>;
+} // namespace munkres

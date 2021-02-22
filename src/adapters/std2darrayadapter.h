@@ -19,34 +19,37 @@
 #ifndef STD2DARRAYADAPTER_H
 #define STD2DARRAYADAPTER_H
 
+#include <array>
+
 #include "adapter.h"
 
-template<typename Data, size_t rows, size_t columns> class Std2dArrayAdapter : public Adapter<Data, std::array <std::array <Data, columns>, rows>>
-{
-public:
-    virtual Matrix<Data> convertToMatrix(const std::array <std::array <Data, columns>, rows>  &array) const override
-    {
-        Matrix <Data> matrix(rows, columns);
-        for (int i = 0; i < rows; ++i)
-        {
-            for (int j = 0; j < columns; ++j)
-            {
-                matrix (i, j) = array [i][j];
-            }
-        }
-        return matrix;
-    }
+namespace munkres {
 
-    virtual void convertFromMatrix(std::array <std::array <Data, columns>, rows> &array,const Matrix<Data> &matrix) const override
-    {
-        for (int i = 0; i < rows; ++i)
-        {
-            for (int j = 0; j < columns; ++j)
-            {
-                array [i][j] = matrix (i, j);
-            }
-        }
+template <typename Data, size_t rows, size_t columns>
+class Std2dArrayAdapter
+    : public Adapter<Data, std::array<std::array<Data, columns>, rows>> {
+public:
+  virtual Matrix<Data> convertToMatrix(
+      const std::array<std::array<Data, columns>, rows>& array) const override {
+    Matrix<Data> matrix(rows, columns);
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < columns; ++j) {
+        matrix(i, j) = array[i][j];
+      }
     }
+    return matrix;
+  }
+
+  virtual void
+      convertFromMatrix(std::array<std::array<Data, columns>, rows>& array,
+                        const Matrix<Data>& matrix) const override {
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < columns; ++j) {
+        array[i][j] = matrix(i, j);
+      }
+    }
+  }
 };
 
+} // namespace munkres
 #endif // STD2DARRAYADAPTER_H
